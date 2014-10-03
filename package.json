@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sergey Kozachenko",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.x",
+    "jade": "^1.7.0"
+  }
 }
