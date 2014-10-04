@@ -5,7 +5,7 @@ var blog = require('./blog');
 
 module.exports = function(app){
   
-  winston.debug('Routes init started');
+  winston.info('Routes init started');
 
   app.use('/', home);
   app.use('/logs', log.routes);
@@ -15,5 +15,5 @@ module.exports = function(app){
   app.use(log.xhr);
   app.use(log.showErrorPage);
 
-  winston.debug('Routes init done');
+  winston.info('Routes init done');
 };

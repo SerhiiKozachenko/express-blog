@@ -5,7 +5,7 @@ var redis = require('redis');
 var cache = redis.createClient();
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 
 var logger = require('./logger');
 var morgan = require('morgan');
@@ -27,7 +27,7 @@ if (cluster.isMaster){
     logger.info('Worker #'+ worker.process.pid +' died, code: '+code + ', signal: '+signal); 
   });
 } else{
-  _startWorker();
+  require('./db')(_startWorker);
 }
 
 function _startWorker(){
@@ -66,7 +66,7 @@ function _startWorker(){
     });
   });
 
-  app.use(bodyParser.urlencoded());
+  app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
   require('./routes')(app);
