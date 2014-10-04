@@ -4,10 +4,44 @@ var redis = require('redis');
 var cache = redis.createClient();
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
+var winston = require('winston');
+
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {
+  level: 'debug',
+  timestamp: true,
+  colorize: true
+});
+winston.add(winston.transports.File, {
+  name: 'file.errors',
+  filename: 'logs/errors.log',
+  handleExceptions: true,
+  level: 'error',
+  json: true
+});
+winston.add(winston.transports.File, {
+  name: 'file.common',
+  filename: 'logs/common.log',
+  handleExceptions: false,
+  level: 'info',
+  json: true
+});
+winston.exitOnError = false;
+
+process.on('uncaughtException', function (err) {
+  winston.error(err.stack);
+});
 
 app.set('views', './views');
 app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
+
+var winstonStream = {
+    write: function(message, encoding){
+        winston.info(message);
+    }
+};
+app.use(require('morgan')({ "stream": winstonStream}));
 
 app.use(session({
 	store: new RedisStore(),
@@ -34,5 +68,5 @@ app.use(function(req, res, next){
 require('./routes')(app);
 
 var server = app.listen(3000, function(){
-  console.log('Listening on port %d', server.address().port);
+  winston.info('Listening on port %d', server.address().port);
 });

@@ -1,12 +1,14 @@
 module.exports = function(app){
   var home = require('./home');
-  var log = require('./log');
+  var winston = require('winston');
+  var log = require('./log')(winston);
 
-  console.log('routes init started');
+  winston.debug('routes init started');
 
   app.use('/', home);
+  app.use('/logs', log.routes);
 
-  app.use(log.logConsole);
-  app.use(log.logXhr);
+  app.use(log.console);
+  app.use(log.xhr);
   app.use(log.showErrorPage);
 };
