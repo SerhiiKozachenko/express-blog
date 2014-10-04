@@ -1,7 +1,7 @@
 express-blog
 ============
 
-Blog web app. Handy project to learn node.js and other technlogies.
+Blog web app. Handy project to learn node.js and other technologies.
 
 Technology stack
 ---------------
