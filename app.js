@@ -1,72 +1,77 @@
 var express = require('express');
-var app = express();
+var cluster = require( 'cluster' );
+var cCPUs = require('os').cpus().length;
 var redis = require('redis');
 var cache = redis.createClient();
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
-var winston = require('winston');
 
-winston.remove(winston.transports.Console);
-winston.add(winston.transports.Console, {
-  level: 'debug',
-  timestamp: true,
-  colorize: true
-});
-winston.add(winston.transports.File, {
-  name: 'file.errors',
-  filename: 'logs/errors.log',
-  handleExceptions: true,
-  level: 'error',
-  json: true
-});
-winston.add(winston.transports.File, {
-  name: 'file.common',
-  filename: 'logs/common.log',
-  handleExceptions: false,
-  level: 'info',
-  json: true
-});
-winston.exitOnError = false;
+var logger = require('./logger');
+var morgan = require('morgan');
 
 process.on('uncaughtException', function (err) {
-  winston.error(err.stack);
+  logger.error(err.stack);
 });
 
-app.set('views', './views');
-app.set('view engine', 'jade');
-app.engine('jade', require('jade').__express);
+if (cluster.isMaster){
+  for(var i=0; i<cCPUs; i++){
+    cluster.fork();
+  }
 
-var winstonStream = {
-    write: function(message, encoding){
-        winston.info(message);
-    }
-};
-app.use(require('morgan')({ "stream": winstonStream}));
-
-app.use(session({
-	store: new RedisStore(),
-	secret: 'supersecretpasswordX',
-	resave: false,
-	saveUninitialized: false
-}));
-
-app.use(function(req, res, next){
-  var ua = req.headers['user-agent'];
-  cache.zadd('online', Date.now(), ua, next);
-});
-
-app.use(function(req, res, next){
-  var min = 60 * 1000;
-  var ago = Date.now() - min;
-  cache.zrevrangebyscore('online', '+inf', ago, function(err, users){
-    if (err) return next(err);
-    req.online = users;
-    next();
+  cluster.on('online', function(worker){
+    logger.info('Worker #'+ worker.process.pid +' online'); 
   });
-});
 
-require('./routes')(app);
+  cluster.on('exit', function(worker, code, signal){
+    logger.info('Worker #'+ worker.process.pid +' died, code: '+code + ', signal: '+signal); 
+  });
+} else{
+  _startWorker();
+}
 
-var server = app.listen(3000, function(){
-  winston.info('Listening on port %d', server.address().port);
-});
+function _startWorker(){
+  var app = express();
+  app.set('views', './views');
+  app.set('view engine', 'jade');
+  app.engine('jade', require('jade').__express);
+
+  var winstonStream = {
+    write: function(message, encoding){
+      logger.info(message);
+    }
+  };
+
+  app.use(morgan('combined',{ "stream": winstonStream}));
+
+  app.use(session({
+    store: new RedisStore(),
+    secret: 'supersecretpasswordX',
+    resave: false,
+    saveUninitialized: false
+  }));
+
+  app.use(function(req, res, next){
+    var ua = req.headers['user-agent'];
+    cache.zadd('online', Date.now(), ua, next);
+  });
+
+  app.use(function(req, res, next){
+    var min = 60 * 1000;
+    var ago = Date.now() - min;
+    cache.zrevrangebyscore('online', '+inf', ago, function(err, users){
+      if (err) return next(err);
+      req.online = users;
+      next();
+    });
+  });
+
+  require('./routes')(app);
+  var server = app.listen(3000, function(){
+    logger.info('Listening on port %d', server.address().port);
+  });
+};
+
+
+
+
+
