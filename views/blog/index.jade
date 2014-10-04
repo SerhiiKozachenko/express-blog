@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1 Articles
+  a(href='/blog/add') add
+
+  for article in articles
+    article
+      h3=article.title
+      p=article.body
+      small
+        time(datetime=article.date)=article.date
+        &nbsp; 
+        span=article.author
+        br
+        a(href='/blog/#{article.id}/show') show
+        &nbsp;
+        a(href='/blog/#{article.id}/edit') edit

@@ -5,6 +5,7 @@ var redis = require('redis');
 var cache = redis.createClient();
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
+var bodyParser = require('body-parser')
 
 var logger = require('./logger');
 var morgan = require('morgan');
@@ -64,6 +65,9 @@ function _startWorker(){
       next();
     });
   });
+
+  app.use(bodyParser.urlencoded());
+  app.use(bodyParser.json());
 
   require('./routes')(app);
   var server = app.listen(3000, function(){

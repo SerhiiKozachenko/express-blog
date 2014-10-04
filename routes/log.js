@@ -35,7 +35,7 @@ module.exports = {
     routes: router,
 
     console: function(err, req, res, next){
-      logger.error(err.stack);
+      winston.error(err.stack);
       next(err);
     },
 

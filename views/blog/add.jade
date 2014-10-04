@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  a(href='/blog') back
+  br
+  br
+  form(action='/blog/add', method='POST')
+    input(type='hidden', name='id', value=article.id)
+    label(for='title') Title: 
+    input(type='text', name='title', value=article.title)
+    br
+    label(for='body') Content:
+    textarea(name='body', rows=5, cols=55)=article.body
+    br
+    button(type='submit') Save
