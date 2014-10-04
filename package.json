@@ -10,6 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "express": "4.x",
-    "jade": "^1.7.0"
+    "jade": "^1.7.0",
+    "redis": "*",
+    "hiredis": "^0.1.17",
+    "connect-redis": "^2.1.0",
+    "express-session": "^1.8.2"
   }
 }
