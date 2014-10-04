@@ -4,7 +4,7 @@ module.exports = function(app){
 
   console.log('routes init started');
 
-  app.get('/', home.index);
+  app.use('/', home);
 
   app.use(log.logConsole);
   app.use(log.logXhr);
