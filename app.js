@@ -6,6 +6,8 @@ var cache = redis.createClient();
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 var logger = require('./logger');
 var morgan = require('morgan');
@@ -51,6 +53,8 @@ function _startWorker(){
     saveUninitialized: false
   }));
 
+  app.use(flash());
+
   app.use(function(req, res, next){
     var ua = req.headers['user-agent'];
     cache.zadd('online', Date.now(), ua, next);
@@ -68,7 +72,9 @@ function _startWorker(){
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
-
+  app.use(passport.initialize());
+  app.use(passport.session());
+  require('./auth');
   require('./routes')(app);
   var server = app.listen(3000, function(){
     logger.info('Listening on port %d', server.address().port);

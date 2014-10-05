@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  h1 Register
+  a(href='/auth/login') Login
+  
+  form(action='/auth/register', method='POST')
+    label(for='username') Username: 
+    input(type='text', name='name', value=login.name)
+    br
+    label(for='password') Password:
+    input(type='password', name='password', value=login.password)
+    br
+    label(for='repassword') Repeat Password:
+    input(type='password', name='repassword', value=login.repassword)
+    br
+    label(for='email') Email:
+    input(type='email', name='email', value=login.email)
+    br
+    button(type='submit') Register
+  br
+  for error in errors
+    span #{error}
+    br
