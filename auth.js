@@ -27,7 +27,7 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser(function(user, done) {
-  cache.setex('user_'+id, REDIS_USER_EXPIRATION_SECONDS, user);
+  cache.setex('user_'+user.id, REDIS_USER_EXPIRATION_SECONDS, user);
   done(null, user.id);
 });
 
