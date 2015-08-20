@@ -3,16 +3,24 @@ extends ../layout
 block content
   h1 Articles
   a(href='/blog/add') add
-
+  br
   for article in articles
     article
-      h3=article.title
-      p=article.body
-      small
-        time(datetime=article.date)=article.date
-        &nbsp; 
-        span=article.author
-        br
-        a(href='/blog/#{article.id}/show') show
-        &nbsp;
+      .post-preview
+        a(href='/blog/#{article.id}/show')
+          h2.post-title=article.title
+          h3.post-subtitle=article.body
         a(href='/blog/#{article.id}/edit') edit
+        p.post-meta
+          Posted by
+          a(href='#')=article.author
+          =article.date
+      hr
+
+  // Pager
+  ul.pager
+    li.next
+      a(href='#') Older Posts &rarr;
+  
+
+  

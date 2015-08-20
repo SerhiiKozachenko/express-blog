@@ -22,11 +22,11 @@ if (cluster.isMaster){
   }
 
   cluster.on('online', function(worker){
-    logger.info('Worker #'+ worker.process.pid +' online'); 
+    logger.info('Worker #'+ worker.process.pid +' online');
   });
 
   cluster.on('exit', function(worker, code, signal){
-    logger.info('Worker #'+ worker.process.pid +' died, code: '+code + ', signal: '+signal); 
+    logger.info('Worker #'+ worker.process.pid +' died, code: '+code + ', signal: '+signal);
   });
 } else{
   require('./db')(_startWorker);
@@ -43,6 +43,9 @@ function _startWorker(){
       logger.info(message);
     }
   };
+
+  // serve static files
+  app.use(express.static('public'));
 
   app.use(morgan('combined',{ "stream": winstonStream}));
 
@@ -80,8 +83,3 @@ function _startWorker(){
     logger.info('Listening on port %d', server.address().port);
   });
 };
-
-
-
-
-
