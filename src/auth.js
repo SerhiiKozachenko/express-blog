@@ -55,7 +55,7 @@ passport.deserializeUser(function(id, done) {
       });
     } else {
       winston.debug('Redis, deserializeUser: cool get from redis');
-      done(null, result);
+      done(null, JSON.parse(result));
     }
   })
 });

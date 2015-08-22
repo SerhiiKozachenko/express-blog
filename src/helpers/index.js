@@ -1,6 +1,6 @@
 var winston = require('winston');
 
-//var ADMIN_USERNAME = 'serg';
+var ADMIN_EMAIL = 'wbserg@gmail.com';
 
 module.exports = function(app){
 
@@ -10,7 +10,7 @@ module.exports = function(app){
   function _setUser(req, res, next) {
     if (!!req.user) {
       res.locals.isLoggedIn = !req.user.anonymous;
-      //res.locals.isAdmin = req.user.name === ADMIN_USERNAME;
+      res.locals.isAdmin = req.user.email === ADMIN_EMAIL;
       res.locals.userName = req.user.name;
     }
 
