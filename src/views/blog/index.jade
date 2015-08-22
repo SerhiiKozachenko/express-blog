@@ -1,9 +1,10 @@
 extends ../layout
 
 block content
-  h1 Articles
   -if (isAdmin) 
-    a(href='/blog/add') add
+    a(href='/blog/add')
+      span(class='glyphicon glyphicon-pencil')
+      |&nbsp;Write new masterpiece
   br
   for article in articles
     article
@@ -11,11 +12,25 @@ block content
         a(href='/blog/#{article.id}/show')
           h2.post-title #{article.title}
           h3.post-subtitle #{article.sub}
-        a(href='/blog/#{article.id}/edit') edit
+        
         p.post-meta
-          Posted by&nbsp;
+          |Posted by&nbsp;
           a(href='/about') #{article.user}
           &nbsp;#{moment(article.created).calendar()}
+          &nbsp;
+          span(class='post-meta-stats')
+            span(class='glyphicon glyphicon-heart')
+            &nbsp#{article.meta.likes}
+            &nbsp;
+            span(class='glyphicon glyphicon-envelope')
+            &nbsp#{article.meta.comments}
+          a(href='/blog/#{article.id}/edit', class='pull-right post-edit-link') 
+            span(class='glyphicon glyphicon-pencil')
+            |&nbsp;rewrite
+          br
+          for tag in article.tags
+            span(class='label label-info') #{tag} 
+            &nbsp;
       hr
 
   // Pager
