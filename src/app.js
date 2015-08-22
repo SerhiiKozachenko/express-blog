@@ -78,6 +78,7 @@ function _startWorker(){
   app.use(passport.initialize());
   app.use(passport.session());
   require('./auth');
+  require('./helpers')(app);
   require('./routes')(app);
   var server = app.listen(3000, function(){
     logger.info('Listening on port %d', server.address().port);

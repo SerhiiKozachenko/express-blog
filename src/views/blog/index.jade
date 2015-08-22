@@ -2,7 +2,8 @@ extends ../layout
 
 block content
   h1 Articles
-  a(href='/blog/add') add
+  -if (isLoggedIn) 
+    a(href='/blog/add') add
   br
   for article in articles
     article
