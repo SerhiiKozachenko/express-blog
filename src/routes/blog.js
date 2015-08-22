@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var mongoose = require('mongoose');
 var Blog = require('../models/blog');
 
 router.get('/', function(req, res, next){
@@ -29,6 +30,7 @@ router.route('/:id/edit')
   	  if (err) {
         next(err);
   	  } else {
+        data.tags = data.tags.join();
   	    res.render('blog/edit', {article: data});
   	  }
     });
@@ -36,13 +38,19 @@ router.route('/:id/edit')
   .post(_isAdmin, function(req, res, next){
   	var id = req.body.id;
   	var title = req.body.title;
+    var sub = req.body.sub;
     var body = req.body.body;
+    var tags = req.body.tags.split(',');
+    var cover = req.body.cover;
     Blog.findOne({_id: id}, function(err, data){
   	  if (err) {
         next(err);
   	  } else {
   	    data.title = title;
+        data.sub = sub;
   	    data.body = body;
+        data.tags = tags;
+        data.cover = cover;
   	    data.save(function(err){
           if (err){
             next(err);
@@ -60,12 +68,20 @@ router.route('/add')
   })
   .post(_isAdmin, function(req, res, next){
   	var title = req.body.title;
+    var sub = req.body.sub;
     var body = req.body.body;
+    var tags = req.body.tags.split(',');
+    var cover = req.body.cover;
+    var user = req.user.name;
+    var _userId = mongoose.Types.ObjectId(req.user.id);
   	var blog = new Blog({
   	  title: title,
+      sub: sub,
       body: body,
-      date: new Date().toISOString(),
-      author: 'Sergey Kozachenko'
+      user: user,
+      _userId: _userId,
+      tags: tags,
+      cover: cover
   	});
   	blog.save(function(err){
       if (err){
