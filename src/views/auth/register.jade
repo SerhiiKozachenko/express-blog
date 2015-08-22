@@ -1,24 +1,27 @@
 extends ../layout
 
 block content
-  h1 Register
-  a(href='/auth/login') Login
-  
-  form(action='/auth/register', method='POST')
-    label(for='username') Username: 
-    input(type='text', name='name', value=login.name)
+  .col-lg-offset-3.col-lg-6
+    a(href='/auth/login') 
+      span(class='glyphicon glyphicon-hand-left')
+      |&nbsp;Return to Login
     br
-    label(for='password') Password:
-    input(type='password', name='password', value=login.password)
+    h1 Welcome
     br
-    label(for='repassword') Repeat Password:
-    input(type='password', name='repassword', value=login.repassword)
-    br
-    label(for='email') Email:
-    input(type='email', name='email', value=login.email)
-    br
-    button(type='submit') Register
-  br
-  for error in errors
-    span #{error}
-    br
+    form(action='/auth/register', method='POST')
+      div(class='form-group')
+        label(for='username') Username: 
+        input(type='text', name='name', class='form-control', value=login.name)
+      div(class='form-group')
+        label(for='password') Password:
+        input(type='password', name='password', class='form-control', value=login.password)
+      div(class='form-group')
+        label(for='repassword') Repeat Password:
+        input(type='password', name='repassword', class='form-control', value=login.repassword)
+      div(class='form-group')
+        label(for='email') Email:
+        input(type='email', name='email', class='form-control', value=login.email)
+      button(type='submit',class='btn btn-success') Register
+    for error in errors
+      p.text-danger #{error}
+      br

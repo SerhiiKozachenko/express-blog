@@ -1,18 +1,21 @@
 extends ../layout
 
 block content
-  h1 Login
-  a(href='/auth/register') Register
-  
-  form(action='/auth/login', method='POST')
-    label(for='email') Email: 
-    input(type='email', name='email', value=login.email)
+  .col-lg-offset-3.col-lg-6
+    a(href='/auth/register') 
+      span(class='glyphicon glyphicon-registration-mark')
+      |&nbsp;Signup for account
     br
-    label(for='password') Password:
-    input(type='password', name='password', value=login.password)
+    h1 Ahoy, my master!
     br
-    button(type='submit') Login
-  br
-  for error in errors
-    span #{error}
-    br
+    form(action='/auth/login', method='POST')
+      div(class='form-group')
+        label(for='email') Email: 
+        input(type='email', name='email', class='form-control', value=login.email)
+      div(class='form-group')
+        label(for='password') Password:
+        input(type='password', name='password', class='form-control', value=login.password)
+      button(type='submit',class='btn btn-success') Login
+    for error in errors
+      p.text-danger #{error}
+      br
