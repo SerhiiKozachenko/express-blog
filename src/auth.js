@@ -10,15 +10,15 @@ var REDIS_USER_EXPIRATION_SECONDS = 21600; // 6 Hrs
 // Used every time when login check happened
 passport.use(new LocalStrategy({
     // Map form fields
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password'
   },
-  function(username, password, done) {
-    winston.debug('Passport: Find User by name: ' + username);
-    User.findOne({ name: username }, function(err, user) {
+  function(email, password, done) {
+    winston.debug('Passport: Find User by email: ' + email);
+    User.findOne({ email: email }, function(err, user) {
       if (err) return done(err);
       if (!user) {
-        return done(null, false, 'Incorrect username');
+        return done(null, false, 'User with email: '+ email + ' not found');
       }
       user.comparePassword(password, function(err, isMatch){
         if (err) return done(err);

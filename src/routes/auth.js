@@ -8,7 +8,7 @@ router.route('/login')
   	res.render('auth/login', {login: {}, errors: req.flash('error')});
   })
   .post(
-    passport.authenticate('local', { 
+    passport.authenticate('local', {
   	  successRedirect: '/blog',
       failureRedirect: 'login',
       failureFlash: true })
@@ -23,12 +23,19 @@ router.route('/register')
     var password = req.body.password;
     var email = req.body.email;
     var user = new User({
+      email: email,
       name: name,
-      password: password,
-      email: email
+      password: password
     });
     user.save(function(err){
       if (err) {
+        if (err.code === 11000 || err.code === 11001) {
+          // unique constraint errors codes
+          // User.email is only has unique constraint
+          req.flash('error', 'Email already taken');
+          res.render('auth/register', {login: user, errors: req.flash('error')});
+          return;
+        }
       	next(err);
       } else {
       	req.login(user, function(err) {
