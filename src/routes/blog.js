@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Blog = require('../models/blog');
 
-router.get('/', _isUserLoggedIn, function(req, res, next){
+router.get('/', /*_isUserLoggedIn,*/ function(req, res, next){
   Blog.find({}, function(err, data){
   	if (err) {
       next(err);
@@ -11,7 +11,7 @@ router.get('/', _isUserLoggedIn, function(req, res, next){
   });
 });
 
-router.get('/:id/show', _isUserLoggedIn, function(req, res, next){
+router.get('/:id/show', /*_isUserLoggedIn,*/ function(req, res, next){
   var id = req.params.id;
   Blog.findOne({_id: id}, function(err, data){
   	if (err) {
