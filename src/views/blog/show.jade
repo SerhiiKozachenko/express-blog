@@ -1,13 +1,24 @@
 extends ../layout
 
+block header
+  header.intro-header(style="background-image: url('#{article.cover}')")
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          .post-heading
+            h1 #{article.title}
+            h2.subheading #{article.sub}
+            |           
+            span.meta
+              | Posted by 
+              a(href='/about') #{article.user}
+              |  #{moment(article.created).calendar()}
+
 block content
-  a(href='/blog') back
-  article
-  h3=article.title 
-  p=article.body
-  small
-    time(datetime=article.date)=article.date
-      &nbsp; 
-      span=article.author
-      br
-      a(href='/blog/#{article.id}/edit') edit
+  a(href='/blog') 
+    span(class='glyphicon glyphicon-hand-left')
+    |&nbsp;Return to list
+  br
+  br
+  article!=article.body
+        
