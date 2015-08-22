@@ -1,15 +1,29 @@
 extends ../layout
 
 block content
-  a(href='/blog') back
+  a(href='/blog') 
+    span(class='glyphicon glyphicon-hand-left')
+    |&nbsp;Return to list
   br
   br
   form(action='/blog/add', method='POST')
     input(type='hidden', name='id', value=article.id)
-    label(for='title') Title: 
-    input(type='text', name='title', value=article.title)
-    br
-    label(for='body') Content:
-    textarea(name='body', rows=5, cols=55)=article.body
-    br
-    button(type='submit') Save
+    div(class='form-group')
+      label(for='title') Title: 
+      input(type='text', name='title', class='form-control', value=article.title)
+    div(class='form-group')
+      label(for='body') Content:
+      textarea(name='body', id='body')=article.body
+    button(type='submit', class='btn btn-success') Save
+
+append scripts
+  script.
+    CKEDITOR.editorConfig = function( config ) {
+      config.language = 'en';
+      config.uiColor = '#F7B42C';
+      config.height = 800;
+      config.width = '100%';
+      config.toolbarCanCollapse = true;
+      config.autoGrow_onStartup = true;
+    };
+    CKEDITOR.replace( 'body' );
