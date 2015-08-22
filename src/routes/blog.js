@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Blog = require('../models/blog');
 
-router.get('/', /*_isUserLoggedIn,*/ function(req, res, next){
+router.get('/', function(req, res, next){
   Blog.find({}, function(err, data){
   	if (err) {
       next(err);
@@ -11,7 +11,7 @@ router.get('/', /*_isUserLoggedIn,*/ function(req, res, next){
   });
 });
 
-router.get('/:id/show', /*_isUserLoggedIn,*/ function(req, res, next){
+router.get('/:id/show', function(req, res, next){
   var id = req.params.id;
   Blog.findOne({_id: id}, function(err, data){
   	if (err) {
@@ -23,7 +23,7 @@ router.get('/:id/show', /*_isUserLoggedIn,*/ function(req, res, next){
 });
 
 router.route('/:id/edit')
-  .get(_isUserLoggedIn, function(req, res){
+  .get(_isAdmin, function(req, res){
   	var id = req.params.id;
   	Blog.findOne({_id: id}, function(err, data){
   	  if (err) {
@@ -33,7 +33,7 @@ router.route('/:id/edit')
   	  }
     });
   })
-  .post(_isUserLoggedIn, function(req, res, next){
+  .post(_isAdmin, function(req, res, next){
   	var id = req.body.id;
   	var title = req.body.title;
     var body = req.body.body;
@@ -55,10 +55,10 @@ router.route('/:id/edit')
   });
 
 router.route('/add')
-  .get(_isUserLoggedIn, function(req, res){
+  .get(_isAdmin, function(req, res){
     res.render('blog/add', {article: {}});
   })
-  .post(_isUserLoggedIn, function(req, res, next){
+  .post(_isAdmin, function(req, res, next){
   	var title = req.body.title;
     var body = req.body.body;
   	var blog = new Blog({
@@ -76,7 +76,7 @@ router.route('/add')
   	});
   });
 
-router.post('/:id/delete', _isUserLoggedIn, function(req, res){
+router.post('/:id/delete', _isAdmin, function(req, res){
   var id = req.params.id;
   Blog.remove({_id: id}, function(err){
     if(err){
@@ -87,8 +87,8 @@ router.post('/:id/delete', _isUserLoggedIn, function(req, res){
   });
 });
 
-function _isUserLoggedIn(req, res, next){
-  if (req.user){
+function _isAdmin(req, res, next){
+  if (req.user && req.user.isAdmin){
     next();
   } else {
     res.redirect('/auth/login');

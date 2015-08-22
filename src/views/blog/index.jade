@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   h1 Articles
-  -if (isLoggedIn) 
+  -if (isAdmin) 
     a(href='/blog/add') add
   br
   for article in articles

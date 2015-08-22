@@ -11,6 +11,7 @@ module.exports = function(app){
     if (!!req.user) {
       res.locals.isLoggedIn = !req.user.anonymous;
       res.locals.isAdmin = req.user.email === ADMIN_EMAIL;
+      req.user.isAdmin = res.locals.isAdmin;
       res.locals.userName = req.user.name;
     }
 
