@@ -42,7 +42,10 @@ body
           li
             a(href='contact.html') Contact
           li
-            a(href='/auth/login') Login
+            -if (!isLoggedIn)
+              a(href='/auth/login') Login
+            -else 
+              a(href='/auth/logout') Logout
   header.intro-header(style="background-image: url('img/home-bg.jpg')")
     .container
       .row

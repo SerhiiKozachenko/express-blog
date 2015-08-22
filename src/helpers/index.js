@@ -15,6 +15,7 @@ module.exports = function(app){
       res.locals.isAdmin = req.user.email === ADMIN_EMAIL;
       req.user.isAdmin = res.locals.isAdmin;
       res.locals.userName = req.user.name;
+      //winston.debug('User: ' + JSON.stringify(req.user));
     }
 
     next();
