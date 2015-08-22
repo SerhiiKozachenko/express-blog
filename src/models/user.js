@@ -20,7 +20,13 @@ var userSchema = new Schema({
     type: String,
     required: true,
   }
-});
+}
+// it is recommended this behavior be disabled in production since index creation can cause a significant performance impact
+//{ autoIndex: false }
+);
+
+// compound index
+//userSchema.index({ email: 1, name: 1 }); // schema level
 
 userSchema.pre('save', function(next) {
   var user = this;

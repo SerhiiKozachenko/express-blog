@@ -1,4 +1,5 @@
 var winston = require('winston');
+var moment = require('moment');
 
 var ADMIN_EMAIL = 'wbserg@gmail.com';
 
@@ -6,6 +7,7 @@ module.exports = function(app){
 
   app.use(_setUser);
   app.use(_setUsersOnline);
+  app.use(_setMoment);
 
   function _setUser(req, res, next) {
     if (!!req.user) {
@@ -23,6 +25,11 @@ module.exports = function(app){
       res.locals.online = req.online.length;
     }
 
+    next();
+  };
+
+  function _setMoment(req, res, next) {
+    res.locals.moment = moment;
     next();
   };
 
