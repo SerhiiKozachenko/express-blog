@@ -9,6 +9,7 @@ var userSchema = new Schema({
     required: true,
     trim: true, // Creates a setter which calls .trim() on the value
     lowercase: true, // Creates a setter which calls .toLowerCase() on the value
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Invalid email address'], // validate against regexp
     index: { unique: true }
   },
   name:  {

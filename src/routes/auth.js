@@ -19,13 +19,29 @@ router.route('/register')
   	res.render('auth/register', {login: {}, errors: req.flash('error')});
   })
   .post(function(req, res, next){
-    var name = req.body.name;
-    var password = req.body.password;
-    var email = req.body.email;
+    var model = {
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password,
+      repassword: req.body.repassword
+    };
+    // validate
+    if (model.password !== model.repassword) {
+      req.flash('error', 'Confirmation password is not match');
+      res.render('auth/register', {login: model, errors: req.flash('error')});
+      return;
+    }
     var user = new User({
-      email: email,
-      name: name,
-      password: password
+      email: model.email,
+      name: model.name,
+      password: model.password
+    });
+    user.validate(function (err) {
+      if (err) {
+        req.flash('error', err);
+        res.render('auth/register', {login: model, errors: req.flash('error')});
+        return;
+      }
     });
     user.save(function(err){
       if (err) {
@@ -33,7 +49,7 @@ router.route('/register')
           // unique constraint errors codes
           // User.email is only has unique constraint
           req.flash('error', 'Email already taken');
-          res.render('auth/register', {login: user, errors: req.flash('error')});
+          res.render('auth/register', {login: model, errors: req.flash('error')});
           return;
         }
       	next(err);
