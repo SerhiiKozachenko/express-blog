@@ -1,0 +1,66 @@
+extends ../layout
+
+block header
+  header.intro-header(style="background-image: url('#{(error || success) ? 'img/contact-bg-2.png' : 'img/contact-bg-1.png'}')")
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          .page-heading
+            h1 What's Shaking?
+            |                     
+            hr.small
+            |                     
+            span.subheading Tell me what's on your mind
+block content
+  form(action='/contact', method='POST', novalidate='')
+    .row.control-group
+      .form-group.col-xs-12.floating-label-form-group.controls
+        label Name
+        |             
+        input.form-control(type='text', placeholder='Name', name='name', required='', value=contact.name, data-validation-required-message='Please enter your name.')
+        |             
+        p.help-block.text-danger
+    |     
+    .row.control-group
+      .form-group.col-xs-12.floating-label-form-group.controls
+        label Email Address
+        |             
+        input.form-control(type='email', placeholder='Email Address', name='email', required='', value=contact.email, data-validation-required-message='Please enter your email address.')
+        |             
+        p.help-block.text-danger
+    |     
+    .row.control-group
+      .form-group.col-xs-12.floating-label-form-group.controls
+        label Phone Number
+        |             
+        input.form-control(type='tel', placeholder='Phone Number', name='phone', required='', value=contact.phone, data-validation-required-message='Please enter your phone number.')
+        |             
+        p.help-block.text-danger
+    |     
+    .row.control-group
+      .form-group.col-xs-12.floating-label-form-group.controls
+        label Message
+        |             
+        textarea.form-control(rows='5', placeholder='Message', name='message', required='', data-validation-required-message='Please enter a message.')=contact.message
+        |             
+        p.help-block.text-danger
+    |     
+    br
+    |     
+    #success
+      -if (success)
+        div.alert.alert-success
+          button(type='button', class='close', data-dismiss='alert', aria-hidden='true') &times;
+          strong #{success}
+      -if (error)
+        div.alert.alert-danger
+          button(type='button', class='close', data-dismiss='alert', aria-hidden='true') &times;
+          strong #{error}
+    |     
+    .row
+      .form-group.col-xs-12
+        button.btn.btn-default(type='submit') Send
+
+append scripts
+  script(src='/js/contact.js')
+  script(src='/js/jqBootstrapValidation.js')
