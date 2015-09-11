@@ -1,7 +1,7 @@
 extends ../layout
 
 block header
-  header.intro-header(style="background-image: url('/img/home-bg.jpg'); height: 100%; margin-bottom: 0;")
+  header.intro-header(style="position: fixed; background-image: url('/img/home-bg.jpg'); height: 100%; width: 100%; margin-bottom: 0;")
     .container
       .row
         .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
@@ -9,12 +9,7 @@ block header
             h1 Grievoushead
             hr.small
             span.subheading Jedi apps developer with Ajax
-          br
-          br
-          br
-          br
-          br
-          ul.list-inline.text-center
+          ul.list-inline.text-center(style="position: fixed; bottom: 0; left: 0; right: 0;")
             li
               a(href='//twitter.com/Grievoushead')
                 span.fa-stack.fa-lg
