@@ -36,6 +36,7 @@ function _startWorker(){
   var app = express();
   app.set('views', './views');
   app.set('view engine', 'jade');
+  app.disable('x-powered-by');
   app.engine('jade', require('jade').__express);
 
   var winstonStream = {
