@@ -23,7 +23,7 @@ block content
             &nbsp#{article.meta.likes}
             &nbsp;
             span(class='glyphicon glyphicon-envelope')
-            &nbsp#{article.meta.comments}
+            span.disqus-comment-count(data-disqus-identifier='#{article.id}')
           -if(isAdmin)
             a(href='/blog/#{article.id}/edit', class='pull-right post-edit-link') 
               span(class='glyphicon glyphicon-pencil')
@@ -41,6 +41,19 @@ block content
   ul.pager
     li.next
       a(href='#') Older Posts &rarr;
+
+append scripts
+  script.
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'grievoushead';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
   
 
   
