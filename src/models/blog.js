@@ -10,6 +10,7 @@ var commentSchema = new Schema({
 
 var blogSchema = new Schema({
   title:  { type: String, index: true },
+  slug: { type: String, index: { unique: true } },
   sub: String,
   body: String,
   user: String,

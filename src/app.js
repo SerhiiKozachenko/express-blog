@@ -80,6 +80,7 @@ function _startWorker(){
   require('./auth');
   require('./helpers')(app);
   require('./routes')(app);
+  require('./services');
   var server = app.listen(3000, function(){
     logger.info('Listening on port %d', server.address().port);
   });

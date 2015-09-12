@@ -2,8 +2,9 @@ var router = require('express').Router();
 var mongoose = require('mongoose');
 var Blog = require('../models/blog');
 var winston = require('winston');
+var sluger = require('slug');
 
-router.get('/', function(req, res, next){
+router.get('/blog', function(req, res, next){
 
   function response(err, data){
   	if (err) {
@@ -22,9 +23,9 @@ router.get('/', function(req, res, next){
 
 });
 
-router.get('/:id/show', function(req, res, next){
-  var id = req.params.id;
-  Blog.findOne({_id: id}, function(err, data){
+router.get('/:slug', function(req, res, next){
+  var slug = req.params.slug;
+  Blog.findOne({slug: slug}, function(err, data){
   	if (err) {
       next(err);
   	} else {
@@ -33,10 +34,10 @@ router.get('/:id/show', function(req, res, next){
   });
 });
 
-router.route('/:id/edit')
+router.route('/:slug/edit')
   .get(_isAdmin, function(req, res){
-  	var id = req.params.id;
-  	Blog.findOne({_id: id}, function(err, data){
+  	var slug = req.params.slug;
+  	Blog.findOne({slug: slug}, function(err, data){
   	  if (err) {
         next(err);
   	  } else {
@@ -48,6 +49,7 @@ router.route('/:id/edit')
   .post(_isAdmin, function(req, res, next){
   	var id = req.body.id;
   	var title = req.body.title;
+    var slug = sluger(title);
     var sub = req.body.sub;
     var body = req.body.body;
     var tags = req.body.tags.split(',');
@@ -58,6 +60,7 @@ router.route('/:id/edit')
         next(err);
   	  } else {
   	    data.title = title;
+        data.slug = slug;
         data.sub = sub;
   	    data.body = body;
         data.tags = tags;
@@ -74,12 +77,13 @@ router.route('/:id/edit')
     });
   });
 
-router.route('/add')
+router.route('/blog/add')
   .get(_isAdmin, function(req, res){
     res.render('blog/add', {article: {}});
   })
   .post(_isAdmin, function(req, res, next){
   	var title = req.body.title;
+    var slug = sluger(title);
     var sub = req.body.sub;
     var body = req.body.body;
     var tags = req.body.tags.split(',');
@@ -89,6 +93,7 @@ router.route('/add')
     var _userId = mongoose.Types.ObjectId(req.user.id);
   	var blog = new Blog({
   	  title: title,
+      slug: slug,
       sub: sub,
       body: body,
       user: user,
@@ -106,9 +111,9 @@ router.route('/add')
   	});
   });
 
-router.post('/:id/delete', _isAdmin, function(req, res){
-  var id = req.params.id;
-  Blog.remove({_id: id}, function(err){
+router.post('/blog/:slug/delete', _isAdmin, function(req, res){
+  var slug = req.params.slug;
+  Blog.remove({slug: slug}, function(err){
     if(err){
       next(err);
     } else{

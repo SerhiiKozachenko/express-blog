@@ -9,7 +9,7 @@ block content
   for article in articles
     article
       .post-preview
-        a(href='/blog/#{article.id}/show')
+        a(href='/#{article.slug}')
           h2.post-title #{article.title}
           h3.post-subtitle #{article.sub}
         
@@ -23,9 +23,9 @@ block content
             &nbsp#{article.meta.likes}
             &nbsp;
             span(class='glyphicon glyphicon-envelope')
-            span.disqus-comment-count(data-disqus-identifier='#{article.id}')
+            span.disqus-comment-count(data-disqus-identifier='#{article.slug}')
           -if(isAdmin)
-            a(href='/blog/#{article.id}/edit', class='pull-right post-edit-link') 
+            a(href='/#{article.slug}/edit', class='pull-right post-edit-link') 
               span(class='glyphicon glyphicon-pencil')
               |&nbsp;rewrite
           br

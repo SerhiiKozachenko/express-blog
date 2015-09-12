@@ -6,7 +6,7 @@ block content
     |&nbsp;Back to the List
   br
   br
-  form(action='/blog/#{article.id}/edit', method='POST', style='display: inline')
+  form(action='/#{article.slug}/edit', method='POST', style='display: inline')
     input(type='hidden', name='id', value=article.id)
     div(class='form-group')
       label(for='title') Title: 
@@ -29,7 +29,7 @@ block content
         | Draft
     br
     button(type='submit', class='btn btn-success') Save
-  form(class='form-inline', id='deleteForm', style='display: inline' action='/blog/#{article.id}/delete', method='POST', onsubmit='return window.confirm("Are you sure?");') 
+  form(class='form-inline', id='deleteForm', style='display: inline' action='/blog/#{article.slug}/delete', method='POST', onsubmit='return window.confirm("Are you sure?");') 
     button(type='submit', form='deleteForm', class='btn btn-danger') Delete
 
 append scripts
