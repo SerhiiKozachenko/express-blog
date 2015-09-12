@@ -23,6 +23,11 @@ block content
     div(class='form-group')
       label(for='cover') Cover Image: 
       input(type='text', name='cover', class='form-control', value=article.cover)
+    div.checkbox.form-group
+      label
+        input(type='checkbox', name='draft', value=article.draft)
+        | Draft
+      br
     button(type='submit', class='btn btn-success') Save
 
 append scripts

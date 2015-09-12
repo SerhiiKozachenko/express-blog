@@ -23,6 +23,11 @@ block content
     div(class='form-group')
       label(for='cover') Cover Image: 
       input(type='text', name='cover', class='form-control', value=article.cover)
+    div.checkbox.form-group
+      label
+        input(type='checkbox', name='draft', checked=article.draft ? "checked" : undefined)
+        | Draft
+    br
     button(type='submit', class='btn btn-success') Save
   form(class='form-inline', id='deleteForm', style='display: inline' action='/blog/#{article.id}/delete', method='POST', onsubmit='return window.confirm("Are you sure?");') 
     button(type='submit', form='deleteForm', class='btn btn-danger') Delete

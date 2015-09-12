@@ -29,6 +29,9 @@ block content
               span(class='glyphicon glyphicon-pencil')
               |&nbsp;rewrite
           br
+          -if(article.draft)
+            span(class='label label-danger') draft 
+            &nbsp;
           for tag in article.tags
             span(class='label label-info') #{tag} 
             &nbsp;

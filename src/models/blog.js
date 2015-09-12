@@ -19,6 +19,7 @@ var blogSchema = new Schema({
   hidden: Boolean,
   tags: { type: [String], index: true },
   cover: String,
+  draft: Boolean,
   meta: {
     likes: { type: Number, default: 0 },
     comments: { type: Number, default: 0 }
@@ -27,6 +28,14 @@ var blogSchema = new Schema({
 // it is recommended this behavior be disabled in production since index creation can cause a significant performance impact
 //{ autoIndex: false }
 );
+
+blogSchema.static('allNonDraft', function (callback) {
+  return this.find({ draft: { $ne: true } }, callback);
+});
+
+blogSchema.static('all', function (callback) {
+  return this.find({}, callback);
+});
 
 // Compound index
 //blogSchema.index({ title: 1, user: 1, _userId: 1 }); // schema level
