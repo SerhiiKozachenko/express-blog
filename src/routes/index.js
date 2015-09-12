@@ -12,8 +12,9 @@ module.exports = function(app){
   app.use('/auth', auth);
   app.use('/', home);
   app.use('/logs', log.routes);
-  app.use('/', blog);
   app.use('/contact', contact);
+  app.use('/', blog);
+
 
   app.use(log.console);
   app.use(log.xhr);
