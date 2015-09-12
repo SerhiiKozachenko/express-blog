@@ -6,3 +6,16 @@
   font-size: 14px;
   margin-top: 5px;
 }
+
+/* FIX: Name not fit in mobile phone screen size */
+@media only screen and (max-width: 400px) {
+  .intro-header .site-heading h1,
+  .intro-header .page-heading h1 {
+      font-size: 40px;
+  }
+
+  .intro-header .site-heading .subheading,
+  .intro-header .page-heading .subheading {
+    font-size: 20px;
+  }
+}
