@@ -51,6 +51,9 @@ module.exports = {
       res.status(500).render('error500', {error: err.stack});
     },
 
+    showNotFoundPage: function(req, res){
+      winston.error("404 Not Found - URL: " + req.url);
+      res.status(404).render('error404');
+    },
+
 };
-
-

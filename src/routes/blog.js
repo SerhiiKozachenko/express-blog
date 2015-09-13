@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Blog = require('../models/blog');
 var winston = require('winston');
 var sluger = require('slug');
+var log = require('./log');
 
 router.get('/blog', function(req, res, next){
 
@@ -28,7 +29,9 @@ router.get('/:slug', function(req, res, next){
   Blog.findOne({slug: slug}, function(err, data){
   	if (err) {
       next(err);
-  	} else {
+  	} else if (!data) {
+      log.showNotFoundPage(req, res);
+    } else {
   	  res.render('blog/show', {article: data});
   	}
   });
@@ -40,7 +43,9 @@ router.route('/:slug/edit')
   	Blog.findOne({slug: slug}, function(err, data){
   	  if (err) {
         next(err);
-  	  } else {
+  	  } else if (!data) {
+        log.showNotFoundPage(req, res);
+      } else {
         data.tags = data.tags.join();
   	    res.render('blog/edit', {article: data});
   	  }
