@@ -7,6 +7,7 @@ var sluger = require('slug');
 router.get('/blog', function(req, res, next){
 
   function response(err, data){
+    winston.debug('err: ' + err);
   	if (err) {
       next(err);
   	} else {
@@ -16,14 +17,17 @@ router.get('/blog', function(req, res, next){
 
   // only admin can see draft articles
   if (_adminLoggedIn(req)) {
+    winston.debug('_adminLoggedIn: true');
     Blog.all(response);
   } else {
+    winston.debug('_adminLoggedIn: false');
     Blog.allNonDraft(response);
   }
 
 });
 
 router.get('/:slug', function(req, res, next){
+  winston.debug('show hitted');
   var slug = req.params.slug;
   Blog.findOne({slug: slug}, function(err, data){
   	if (err) {
