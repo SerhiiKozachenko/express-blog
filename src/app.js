@@ -12,6 +12,8 @@ var flash = require('connect-flash');
 var logger = require('./logger');
 var morgan = require('morgan');
 
+var favicon = require('serve-favicon');
+
 process.on('uncaughtException', function (err) {
   logger.error(err.stack);
 });
@@ -44,6 +46,9 @@ function _startWorker(){
       logger.info(message);
     }
   };
+
+  // serve favicon
+  app.use(favicon(__dirname + '/public/favicon.ico'));
 
   // serve static files
   app.use(express.static('public'));
