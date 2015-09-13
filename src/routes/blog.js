@@ -28,6 +28,7 @@ router.get('/blog', function(req, res, next){
 
 router.get('/:slug', function(req, res, next){
   winston.debug('show hitted');
+  res.end();
   var slug = req.params.slug;
   Blog.findOne({slug: slug}, function(err, data){
   	if (err) {
