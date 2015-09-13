@@ -28,7 +28,10 @@ router.get('/blog', function(req, res, next){
 
 router.get('/:slug', function(req, res, next){
   winston.debug('show hitted');
+  winston.debug('show hitted, slud' + req.params.slug);
+  winston.debug('end()');
   res.end();
+  return;
   var slug = req.params.slug;
   Blog.findOne({slug: slug}, function(err, data){
   	if (err) {
