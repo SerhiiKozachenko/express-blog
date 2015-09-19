@@ -26,6 +26,51 @@
   }
 }
 
+/* about page */
 .credits {
   font-size: 14px;
+}
+
+/* background image */
+@media only screen and (max-width: 240px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-240.jpg');
+  }
+}
+
+@media only screen and (min-width: 241px) and (max-width: 320px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-320.jpg');
+  }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 500px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-500.jpg');
+  }
+}
+
+@media only screen and (min-width: 501px) and (max-width: 640px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-640.jpg');
+  }
+}
+
+@media only screen and (min-width: 641px) and (max-width: 1440px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-1024.jpg');
+  }
+}
+
+@media only screen and (min-width: 1441px) and (max-width: 5456px) {
+  header.intro-header {
+    background-image: url('/img/home/home-bg-5456.jpg');
+  }
+}
+
+header.intro-header.intro-header--home {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin-bottom: 0;
 }
